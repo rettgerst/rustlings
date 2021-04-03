@@ -1,0 +1,13 @@
+{
+  "rust-analyzer.diagnostics.disabled": ["unlinked-file"],
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/*.rcgu.o": true,
+    "temp_*": true,
+    "target/*": true
+  }
+}
