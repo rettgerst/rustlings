@@ -37,6 +37,29 @@ impl Default for Person {
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        let mut split = s.split(',');
+        let tup = (split.next(), split.next());
+
+        let strs = match tup {
+            (Some(""), Some("")) => ("John", "30"),
+            (Some(name), Some("")) => ("John", "30"),
+            (Some(""), Some(age)) => ("John", "30"),
+            (Some(name), Some(age)) => (name, age),
+            (_, _) => ("John", "30"),
+        };
+
+        let (name, age) = strs;
+
+        let name = name.to_string();
+        let parsedAge = age.parse::<usize>();
+
+        match (name, parsedAge) {
+            (_, Err(age)) => Person {
+                name: String::from("John"),
+                age: 30,
+            },
+            (name, Ok(age)) => Person { name, age },
+        }
     }
 }
 
