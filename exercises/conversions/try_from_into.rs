@@ -11,8 +11,6 @@ struct Color {
     blue: u8,
 }
 
-// I AM NOT DONE
-
 // Your task is to complete this implementation
 // and return an Ok result of inner type Color.
 // You need to create an implementation for a tuple of three integers,
@@ -25,19 +23,63 @@ struct Color {
 // Tuple implementation
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = String;
-    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {}
+    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        let arr = [tuple.0, tuple.1, tuple.2];
+
+        let is_valid = arr.iter().all(|x| *x >= 0 && *x <= 255);
+
+        if is_valid {
+            Ok(Color {
+                red: u8::try_from(tuple.0).expect("Cannot convert red to u8"),
+                green: u8::try_from(tuple.1).expect("Cannot convert green to u8"),
+                blue: u8::try_from(tuple.2).expect("Cannot convert blue to u8"),
+            })
+        } else {
+            Err("Bad input".to_string())
+        }
+    }
 }
 
 // Array implementation
 impl TryFrom<[i16; 3]> for Color {
     type Error = String;
-    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {}
+    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        let is_valid = arr.iter().all(|x| *x >= 0 && *x <= 255);
+
+        if is_valid {
+            Ok(Color {
+                red: u8::try_from(arr[0]).expect("Cannot convert red to u8"),
+                green: u8::try_from(arr[1]).expect("Cannot convert green to u8"),
+                blue: u8::try_from(arr[2]).expect("Cannot convert blue to u8"),
+            })
+        } else {
+            Err("Bad input".to_string())
+        }
+    }
 }
 
 // Slice implementation
 impl TryFrom<&[i16]> for Color {
     type Error = String;
-    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {}
+    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        match slice {
+            [red, green, blue] => {
+                let is_valid = slice.iter().all(|x| {
+                    return *x >= 0 && *x <= 255;
+                });
+                if is_valid {
+                    Ok(Color {
+                        red: u8::try_from(*red).expect("Cannot convert red to u8"),
+                        green: u8::try_from(*green).expect("Cannot convert red to u8"),
+                        blue: u8::try_from(*blue).expect("Cannot convert red to u8"),
+                    })
+                } else {
+                    Err("Bad input! Reeee!".to_string())
+                }
+            }
+            _ => Err("Wrong number of arguments!".to_string()),
+        }
+    }
 }
 
 fn main() {
